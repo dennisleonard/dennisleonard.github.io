@@ -6,7 +6,7 @@ var requestDevice = function() {
   if (navigator.bluetooth) {
     navigator.bluetooth.requestDevice({
       filters: [{
-        services: ['46A970E0-0D5F-11E2-8B5E-0002A5D5C51B']
+        services: ['46a970e0-0d5f-11e2-8b5e-0002a5d5c51b']
       }]
     })
     .then(device => { update('device name: ' + device.Name); })
