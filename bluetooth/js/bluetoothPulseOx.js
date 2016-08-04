@@ -18,7 +18,7 @@ function onPulseOxValueChanged(event) {
     var value = event.target.value;
     var textDecoder = new TextDecoder(); // Used to convert bytes to UTF-8 string.
     write('Received ' + textDecoder.decode(value));
-  /*try {
+  try {
     var sp02 = value[7];
     var msb = ((value[8] & 0xff) << 8) & 0xffffffff;
     var lsb = (value[9] & 0xff) & 0xffffffff;
@@ -28,5 +28,5 @@ function onPulseOxValueChanged(event) {
   } catch (err) {
     write(err);
     write(err.message);
-  }*/
+  }
 }

@@ -3,7 +3,9 @@ var BLOODPRESSURE_SERVICE = '00001810-0000-1000-8000-00805f9b34fb';
 var BLOODPRESSURE_CHARACTERISTIC = '00002a35-0000-1000-8000-00805f9b34fb';
 
 function handleBloodPressureService(service) {
-  return service.getCharacteristic(BLOODPRESSURE_CHARACTERISTIC).then(handleBloodPressureCharacteristic)
+  return service.getCharacteristic(BLOODPRESSURE_CHARACTERISTIC)
+  .then(handleBloodPressureCharacteristic)
+  .catch(error => { write('handleBloodPressureService: ' + error); })
 }
 
 function handleBloodPressureCharacteristic(characteristic) {

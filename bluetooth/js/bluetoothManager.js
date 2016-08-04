@@ -37,7 +37,7 @@ var startRequest = function() {
     ]);
     } else { write('unable to get server'); }
   })
-  .catch(error => { write(error); });
+  .catch(error => { write('startRequest:' + error); });
 }
 
 var clear = function() {  document.getElementById('msg').innerHTML = ""; }
