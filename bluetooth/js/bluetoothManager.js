@@ -69,6 +69,16 @@ function handleBatteryLevelChanged(event) {
 
 function handleCharacteristicValueChanged(event) {
   var value = event.target.value;
+  var sp02 = value[7];
+  var msb = ((data[8] & 0xff) << 8) & 0xffffffff;
+  var lsb = (data[9] & 0xff) & 0xffffffff;
+  var pulseRate = msb | lsb;
+  clear();
+  write(sp02 + ' ' + pulseRate);
+  //writeRawData(value);
+}
+
+function writeRawData(value) {
   var textDecoder = new TextDecoder(); // Used to convert bytes to UTF-8 string.
   write('Received ' + textDecoder.decode(value));
 }
