@@ -15,7 +15,7 @@ var requestDevice = function() {
 var startRequest = function() {
   navigator.bluetooth.requestDevice({
     filters: [{
-      services: [PULSEOX_SERVICE]
+      services: [PULSEOX_SERVICE, BLOODPRESSURE_SERVICE]
     }]
   })
   .then(device => {
@@ -31,17 +31,11 @@ var startRequest = function() {
   .then(server => {
     if(server) {
       write('get primary service...');
-      return server.getPrimaryService(PULSEOX_SERVICE);
-    } else { write('unable to get server'); }
-  })
-  .then(service => {
-    if(service) {
-      write('get characteristic...');
       return Promise.all([
-        service.getCharacteristic(PULSEOX_CHARACTERISTIC).then(handlePulseOxCharacteristic),
-        service.getCharacteristic(BLOODPRESSURE_CHARACTERISTIC).then(handleBloodPressureCharacteristic)
-      ]);
-    } else { write('unable to get service'); }
+        server.getPrimaryService(PULSEOX_SERVICE).then(handlePulseOxService),
+        server.getPrimaryService(BLOODPRESSURE_SERVICE).then(handleBloodPressureCharacteristic)
+    ]);
+    } else { write('unable to get server'); }
   })
   .catch(error => { write(error); });
 }
@@ -56,12 +50,6 @@ var write = function (msg) {
 function handleBatteryLevelChanged(event) {
   let batteryLevel = event.target.value.getUint8(0);
   write('Battery percentage is ' + batteryLevel + '%');
-}
-
-function handleCharacteristicValueChanged(event) {
-  var value = event.target.value;
-  var textDecoder = new TextDecoder(); // Used to convert bytes to UTF-8 string.
-  write('Received ' + textDecoder.decode(value));
 }
 
 function writeRawData(value) {
