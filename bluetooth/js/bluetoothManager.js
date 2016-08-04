@@ -1,5 +1,6 @@
 
 
+
 var requestDevice = function() {
   clear();
   write("requesting device...");
@@ -14,7 +15,7 @@ var requestDevice = function() {
 var startRequest = function() {
   navigator.bluetooth.requestDevice({
     filters: [{
-      services: ['46a970e0-0d5f-11e2-8b5e-0002a5d5c51b']
+      services: [PULSEOX_SERVICE]
     }]
   })
   .then(device => {
@@ -30,27 +31,17 @@ var startRequest = function() {
   .then(server => {
     if(server) {
       write('get primary service...');
-      return server.getPrimaryService('46a970e0-0d5f-11e2-8b5e-0002a5d5c51b');
+      return server.getPrimaryService(PULSEOX_SERVICE);
     } else { write('unable to get server'); }
   })
   .then(service => {
     if(service) {
       write('get characteristic...');
-      return service.getCharacteristic('0aad7ea0-0d60-11e2-8e3c-0002a5d5c51b');
+      return Promise.all([
+        service.getCharacteristic(PULSEOX_CHARACTERISTIC).then(handlePulseOxCharacteristic),
+        service.getCharacteristic(BLOODPRESSURE_SERVICE).then(handleBloodPressureCharacteristic)
+      ]);
     } else { write('unable to get service'); }
-  })
-  .then(characteristic => {
-    if(characteristic) {
-      write('add listener for characteristic changed...');
-      characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged);
-      write('read value...');
-      //return characteristic.readValue();
-      return characteristic.startNotifications();
-    } else { write('unable to get characteristic'); }
-  })
-  .then(value => {
-    write('readValue recieved');
-    write(value);
   })
   .catch(error => { write(error); });
 }
@@ -71,17 +62,6 @@ function handleCharacteristicValueChanged(event) {
   var value = event.target.value;
   var textDecoder = new TextDecoder(); // Used to convert bytes to UTF-8 string.
   write('Received ' + textDecoder.decode(value));
-  /*try {
-    var sp02 = value[7];
-    var msb = ((value[8] & 0xff) << 8) & 0xffffffff;
-    var lsb = (value[9] & 0xff) & 0xffffffff;
-    var pulseRate = msb | lsb;
-    clear();
-    write(sp02 + ' ' + pulseRate);
-  } catch (err) {
-    write(err);
-    write(err.message);
-  }*/
 }
 
 function writeRawData(value) {
@@ -90,6 +70,6 @@ function writeRawData(value) {
 }
 
 function onDisconnected(event) {
-  var device = event.target;
+  let device = event.target;
   write('Device ' + device.name + ' is disconnected.');
 }
