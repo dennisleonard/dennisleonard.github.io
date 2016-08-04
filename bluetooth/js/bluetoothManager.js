@@ -69,9 +69,8 @@ function handleBatteryLevelChanged(event) {
 
 function handleCharacteristicValueChanged(event) {
   var value = event.target.value;
-  write(value);
   writeRawData(value);
-  try {
+  /*try {
     var sp02 = value[7];
     var msb = ((value[8] & 0xff) << 8) & 0xffffffff;
     var lsb = (value[9] & 0xff) & 0xffffffff;
@@ -81,7 +80,7 @@ function handleCharacteristicValueChanged(event) {
   } catch (err) {
     write(err);
     write(err.message);
-  }
+  }*/
 }
 
 function writeRawData(value) {
