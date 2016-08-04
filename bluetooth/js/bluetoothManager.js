@@ -41,8 +41,9 @@ var startRequest = function() {
   })
   .then(characteristic => {
     if(characteristic) {
-      write('read value...');
+      write('add listener for characteristic changed...');
       characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged);
+      write('read value...');
       return characteristic.readValue();
     } else { write('unable to get characteristic'); }
   })
