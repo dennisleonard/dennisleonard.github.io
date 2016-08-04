@@ -89,6 +89,6 @@ function writeRawData(value) {
 }
 
 function onDisconnected(event) {
-  let device = event.target;
+  var device = event.target;
   write('Device ' + device.name + ' is disconnected.');
 }
