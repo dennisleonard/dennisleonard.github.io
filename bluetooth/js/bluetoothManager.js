@@ -21,7 +21,7 @@ var startRequest = function() {
     if(device) {
       write('connecting to ' + device.name);
       device.addEventListener('gattserverdisconnected', onDisconnected);
-      device.gatt.connect();
+      return device.gatt.connect();
       write('> Allowed Services: ' + device.uuids.join('<br/>' + ' '.repeat(20)));
     } else {
       write('unable to connect to device ');
