@@ -39,7 +39,7 @@ var startRequest = function() {
       write('get characteristic...');
       return Promise.all([
         service.getCharacteristic(PULSEOX_CHARACTERISTIC).then(handlePulseOxCharacteristic),
-        service.getCharacteristic(BLOODPRESSURE_SERVICE).then(handleBloodPressureCharacteristic)
+        service.getCharacteristic(BLOODPRESSURE_CHARACTERISTIC).then(handleBloodPressureCharacteristic)
       ]);
     } else { write('unable to get service'); }
   })
