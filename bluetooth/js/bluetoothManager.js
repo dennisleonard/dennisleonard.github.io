@@ -44,11 +44,13 @@ var startRequest = function() {
       write('add listener for characteristic changed...');
       characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged);
       write('read value...');
-      return characteristic.readValue();
+      //return characteristic.readValue();
+      return characteristic.startNotifications();
     } else { write('unable to get characteristic'); }
   })
   .then(value => {
-    write('readValue returned: ' + value);
+    write('readValue recieved');
+    write(value);
   })
   .catch(error => { write(error); });
 }
