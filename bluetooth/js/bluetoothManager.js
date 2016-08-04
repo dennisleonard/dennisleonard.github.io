@@ -69,12 +69,18 @@ function handleBatteryLevelChanged(event) {
 
 function handleCharacteristicValueChanged(event) {
   var value = event.target.value;
-  var sp02 = value[7];
-  var msb = ((value[8] & 0xff) << 8) & 0xffffffff;
-  var lsb = (value[9] & 0xff) & 0xffffffff;
-  var pulseRate = msb | lsb;
-  clear();
-  write(sp02 + ' ' + pulseRate);
+  writeRawData(value);
+  try {
+    var sp02 = value[7];
+    var msb = ((value[8] & 0xff) << 8) & 0xffffffff;
+    var lsb = (value[9] & 0xff) & 0xffffffff;
+    var pulseRate = msb | lsb;
+    clear();
+    write(sp02 + ' ' + pulseRate);
+  } catch (err) {
+    write(err);
+    write(error.message);
+  }
   //writeRawData(value);
 }
 
