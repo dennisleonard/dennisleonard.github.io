@@ -69,7 +69,8 @@ function handleBatteryLevelChanged(event) {
 
 function handleCharacteristicValueChanged(event) {
   var value = event.target.value;
-  writeRawData(value);
+  var textDecoder = new TextDecoder(); // Used to convert bytes to UTF-8 string.
+  write('Received ' + textDecoder.decode(value));
   /*try {
     var sp02 = value[7];
     var msb = ((value[8] & 0xff) << 8) & 0xffffffff;
