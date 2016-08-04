@@ -79,9 +79,8 @@ function handleCharacteristicValueChanged(event) {
     write(sp02 + ' ' + pulseRate);
   } catch (err) {
     write(err);
-    write(error.message);
+    write(err.message);
   }
-  //writeRawData(value);
 }
 
 function writeRawData(value) {
