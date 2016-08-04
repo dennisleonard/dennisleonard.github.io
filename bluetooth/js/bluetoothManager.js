@@ -69,6 +69,7 @@ function handleBatteryLevelChanged(event) {
 
 function handleCharacteristicValueChanged(event) {
   var value = event.target.value;
+  write(value);
   writeRawData(value);
   try {
     var sp02 = value[7];
