@@ -3,7 +3,7 @@
 
 var requestDevice = function() {
   clear();
-  write("requesting device...");
+  write("start connection...");
 
   if (navigator.bluetooth) {
     startRequest();
@@ -24,7 +24,7 @@ var startRequest = function() {
       clear();
       write('connecting to ' + device.name);
       device.addEventListener('gattserverdisconnected', onDisconnected);
-      write('> Allowed Services: ' + device.uuids.join('<br/>' + ' '.repeat(20)));
+      log('> Allowed Services: ' + device.uuids.join('<br/>' + ' '.repeat(20)));
       return device.gatt.connect();
     } else {
       write('unable to connect to device ');
@@ -65,5 +65,6 @@ function writeRawData(value) {
 
 function onDisconnected(event) {
   let device = event.target;
+  clear();
   log('Device ' + device.name + ' is disconnected.');
 }
