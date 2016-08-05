@@ -40,14 +40,14 @@ var startRequest = function() {
     } else { write('unable to get server'); }
   })
   .catch(error => { write('startRequest:' + error); });
-}
+};
 
-var clear = function() {  document.getElementById('msg').innerHTML = ""; }
+function clear() {  document.getElementById('msg').innerHTML = ""; }
 
 var write = function (msg) {
   console.log(msg);
   document.getElementById('msg').innerHTML += msg + "<br/>";
-}
+};
 
 function log(msg) {
   console.log(msg);
@@ -59,7 +59,7 @@ function handleBatteryLevelChanged(event) {
 }
 
 function writeRawData(value) {
-  var textDecoder = new TextDecoder(); // Used to convert bytes to UTF-8 string.
+  var textDecoder = new TextDecoder(); 
   write('Received ' + textDecoder.decode(value));
 }
 
