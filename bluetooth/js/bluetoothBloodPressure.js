@@ -11,9 +11,8 @@ function handleBloodPressureService(service) {
 function handleBloodPressureCharacteristic(characteristic) {
     write('add listener for Blood Pressure characteristic changed...');
     characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged);
-    write('read value...');
-    //return characteristic.readValue();
-    return characteristic.startNotifications();
+    //bluetooth.on( 'indication', function(BLOODPRESSURE_CHARACTERISTIC, valueUpdated) {write(valueUpdated);} );
+    return characteristic.startIndications();
 }
 
 function handleCharacteristicValueChanged(event) {

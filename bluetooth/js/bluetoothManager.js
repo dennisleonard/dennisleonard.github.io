@@ -14,12 +14,14 @@ var requestDevice = function() {
 
 var startRequest = function() {
   navigator.bluetooth.requestDevice({
-    filters: [{
-      services: [PULSEOX_SERVICE, BLOODPRESSURE_SERVICE]
-    }]
+    filters: [
+      { services: [PULSEOX_SERVICE] },
+      { services: [BLOODPRESSURE_SERVICE] }
+    ]
   })
   .then(device => {
     if(device) {
+      clear();
       write('connecting to ' + device.name);
       device.addEventListener('gattserverdisconnected', onDisconnected);
       write('> Allowed Services: ' + device.uuids.join('<br/>' + ' '.repeat(20)));
@@ -30,7 +32,7 @@ var startRequest = function() {
   })
   .then(server => {
     if(server) {
-      write('get primary service...');
+      log('get primary service...');
       return Promise.all([
         server.getPrimaryService(PULSEOX_SERVICE).then(handlePulseOxService),
         server.getPrimaryService(BLOODPRESSURE_SERVICE).then(handleBloodPressureCharacteristic)
@@ -47,6 +49,10 @@ var write = function (msg) {
   document.getElementById('msg').innerHTML += msg + "<br/>";
 }
 
+function log(msg) {
+  console.log(msg);
+}
+
 function handleBatteryLevelChanged(event) {
   let batteryLevel = event.target.value.getUint8(0);
   write('Battery percentage is ' + batteryLevel + '%');
@@ -59,5 +65,5 @@ function writeRawData(value) {
 
 function onDisconnected(event) {
   let device = event.target;
-  write('Device ' + device.name + ' is disconnected.');
+  log('Device ' + device.name + ' is disconnected.');
 }

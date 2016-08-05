@@ -2,3 +2,4 @@
 html, body, div { padding: 0; margin: 0; font-family: verdana; }
 html { font-size: 100%; }
 body { padding: 10px; }
+#msg { margin-top: 10px; }

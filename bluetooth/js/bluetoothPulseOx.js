@@ -7,26 +7,24 @@ function handlePulseOxService(service) {
 }
 
 function handlePulseOxCharacteristic(characteristic) {
-    write('add listener for PulseOx characteristic changed...');
+    log('add listener for PulseOx characteristic changed...');
     characteristic.addEventListener('characteristicvaluechanged', onPulseOxValueChanged);
-    write('read value...');
+    log('read value...');
     //return characteristic.readValue();
     return characteristic.startNotifications();
 }
 
 function onPulseOxValueChanged(event) {
-    var value = event.target.value;
-    var textDecoder = new TextDecoder(); // Used to convert bytes to UTF-8 string.
-    write('Received ' + textDecoder.decode(value));
+  var value = event.target.value;
   try {
-    var sp02 = value[7];
-    var msb = ((value[8] & 0xff) << 8) & 0xffffffff;
-    var lsb = (value[9] & 0xff) & 0xffffffff;
+    log('byte length: ' + value.byteLength);
+    var sp02 = value.getUint8(7);
+    var msb = value.getUint8(8);//((value[8] & 0xff) << 8) & 0xffffffff;
+    var lsb = value.getUint8(9);//(value[9] & 0xff) & 0xffffffff;
     var pulseRate = msb | lsb;
     clear();
-    write(sp02 + ' ' + pulseRate);
+    write('Oxygen: ' + sp02 + '% ' + 'Heart Rate: ' + pulseRate);
   } catch (err) {
-    write(err);
     write(err.message);
   }
 }
